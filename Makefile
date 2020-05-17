@@ -25,3 +25,7 @@ attach:
 
 ./savdi-linux-64bit.tar:
 	echo "Download from https://www.sophos.com/en-us/support/downloads/network/sav-dynamic-interface.aspx"
+
+.PHONY: lint
+lint:
+	shellcheck $(shell find . -type f -name '*.sh')
