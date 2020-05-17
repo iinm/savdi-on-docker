@@ -24,7 +24,9 @@ RUN /tmp/savdi-install/savdi_install.sh
 ARG DOCKER_IMAGE_BUILD_TIME
 RUN /opt/sophos-av/bin/savupdate
 
+COPY ./scandata.sh ./healthcheck.sh /usr/local/bin/
 # COPY savdid.conf /usr/local/savdi/savdid.conf
+
 COPY ./docker-entrypoint.sh /docker-entrypoint.sh
 COPY ./init.sh /usr/local/bin/
 ENTRYPOINT ["/docker-entrypoint.sh"]
