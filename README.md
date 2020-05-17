@@ -2,7 +2,7 @@
 
 ![shellcheck](https://github.com/iinm/savdi-on-docker/workflows/shellcheck/badge.svg?branch=master)
 
-This repository provide resources to build docker image that run Sophos Antivirus Dynamic Interface (SAVDI).
+This repository provides resources to build docker image that run Sophos Antivirus Dynamic Interface (SAVDI).
 Note that additional proprietary resources are required to build image. (See `Makefile`)
 
 
