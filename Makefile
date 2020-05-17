@@ -1,5 +1,5 @@
-branch     := $(shell git name-rev --name-only HEAD | sed 's,remotes/,,' | sed 's,origin/,,' | tr '/' '-')
-image_name := savdi:$(branch)
+tag        := $(shell git name-rev --name-only HEAD | sed 's,remotes/,,' | sed 's,origin/,,' | tr '/' '-')
+image_name := savdi:$(tag)
 
 all: ;
 
