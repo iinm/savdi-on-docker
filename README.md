@@ -9,7 +9,7 @@ Note that additional proprietary resources are required to build image. (See `Ma
 Main process launches following processes on container.
 - savdi daemon   : savdi itself
 - sophos updater : This process updates sophos periodically and reload savdi daemon if there is any updates.
-- log watcher    : This process cat log file contents to stdout and truncate them periodically.
+- logcat         : This process cat log file contents to stdout and truncate them periodically.
                    (It's really agry but required because daemon can't output log to stdout even if we configure to output to 'CONSOLE' using `savdid.conf`)
 
 For more detail see `init.sh`.

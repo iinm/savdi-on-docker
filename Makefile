@@ -31,7 +31,7 @@ run:
 		$(image_name)
 .PHONY: stop
 stop:
-	docker kill $(container_id)
+	docker kill -s TERM $(container_id)
 
 .PHONY: attach
 attach:

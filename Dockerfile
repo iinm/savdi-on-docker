@@ -25,5 +25,7 @@ ARG DOCKER_IMAGE_BUILD_TIME
 RUN /opt/sophos-av/bin/savupdate
 
 # COPY savdid.conf /usr/local/savdi/savdid.conf
+COPY ./docker-entrypoint.sh /docker-entrypoint.sh
 COPY ./init.sh /usr/local/bin/
-CMD init.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["init.sh"]

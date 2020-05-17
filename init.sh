@@ -23,7 +23,7 @@ PIDFILE=/var/run/savdid.pid
 /usr/local/bin/savdid -d -s -f "$PIDFILE"
 
 
-# Start log watcher process
+# Start logcat process
 (
   while true; do
     # write logs to stdout and delete logs
@@ -32,8 +32,8 @@ PIDFILE=/var/run/savdid.pid
       | xargs --no-run-if-empty -n 1 -I {} bash -c 'cat {} && truncate -s 0 {}'
     sleep "$LOGCAT_INTERVAL_SEC"
   done
-) 2>&1 | with_prefix "log_watcher: " &
-log_watcher_pid=$!
+) 2>&1 | with_prefix "logcat: " &
+logcat_pid=$!
 
 
 # Start updater process
@@ -65,7 +65,10 @@ updater_pid=$!
 # Output log on exit
 on_exit() {
   exit_status=$?
-  find "$SAVDI_LOGDIR" -type f -size +0c -name '*.log' | sort | xargs --no-run-if-empty cat
+  find "$SAVDI_LOGDIR" -type f -size +0c -name '*.log' \
+    | sort \
+    | xargs --no-run-if-empty cat \
+    | with_prefix "logcat: "
   return "$exit_status"
 }
 trap on_exit EXIT
@@ -81,7 +84,7 @@ while true; do
     log "updater exited."
     exit 1
   fi
-  if ! ps -p "$log_watcher_pid" &> /dev/null; then
+  if ! ps -p "$logcat_pid" &> /dev/null; then
     log "log watcher exited."
     exit 1
   fi
