@@ -62,6 +62,15 @@ log_watcher_pid=$!
 updater_pid=$!
 
 
+# Output log on exit
+on_exit() {
+  exit_status=$?
+  find "$SAVDI_LOGDIR" -type f -size +0c -name '*.log' | sort | xargs --no-run-if-empty cat
+  return "$exit_status"
+}
+trap on_exit EXIT
+
+
 # Ensure all processes are alive
 while true; do
   if ! ps -p "$(cat "$PIDFILE")" &> /dev/null; then
