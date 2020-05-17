@@ -11,7 +11,7 @@ ADD ./savdi-linux-64bit.tar /tmp
 # for debug
 # RUN sed -i 's,sophos-av/install.sh,bash -x sophos-av/install.sh,' /tmp/sophos-av/install.sh
 ARG SOPHOS_INSTALL_OPTIONS
-RUN /tmp/sophos-av/install.sh /opt/sophos-av --update-free --acceptlicence --autostart=False --enableOnBoot=False --automatic --ignore-existing-installation $SOPHOS_INSTALL_OPTIONS
+RUN /tmp/sophos-av/install.sh /opt/sophos-av --acceptlicence --autostart=False --enableOnBoot=False --automatic --ignore-existing-installation $SOPHOS_INSTALL_OPTIONS
 
 # Install SAV Dynamic Interface
 # for debug

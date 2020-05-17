@@ -1,6 +1,8 @@
 tag        := $(shell git name-rev --name-only HEAD | sed 's,remotes/,,' | sed 's,origin/,,' | tr '/' '-')
 image_name := savdi:$(tag)
 
+SOPHOS_INSTALL_OPTIONS ?= --update-free
+
 all: ;
 
 .PHONY: image
