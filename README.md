@@ -1,5 +1,7 @@
 # savdi on docker
 
+![shellcheck](https://github.com/iinm/savdi-on-docker/workflows/shellcheck/badge.svg?branch=master)
+
 ## Build
 
 ```sh
