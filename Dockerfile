@@ -20,6 +20,8 @@ ENV LD_LIBRARY_PATH=/opt/sophos-av/lib64
 RUN /tmp/savdi-install/savdi_install.sh
 
 # Update
+# disable cache
+ARG DOCKER_IMAGE_BUILD_TIME
 RUN /opt/sophos-av/bin/savupdate
 
 # COPY savdid.conf /usr/local/savdi/savdid.conf

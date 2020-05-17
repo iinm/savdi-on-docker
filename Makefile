@@ -1,13 +1,17 @@
 tag := $(shell git name-rev --name-only HEAD | sed 's,remotes/,,' | sed 's,origin/,,' | tr '/' '-')
 image_name := savdi:$(tag)
 
-SOPHOS_INSTALL_OPTIONS ?= --update-free
+SOPHOS_INSTALL_OPTIONS  ?= --update-free
+DOCKER_IMAGE_BUILD_TIME ?= $(shell date "+%s")
 
 all: ;
 
 .PHONY: image
 image: ./sav-linux-free-9.tgz ./savdi-linux-64bit.tar
-	docker build -t $(image_name) --build-arg SOPHOS_INSTALL_OPTIONS="$(SOPHOS_INSTALL_OPTIONS)" .
+	docker build -t $(image_name) \
+		--build-arg SOPHOS_INSTALL_OPTIONS="$(SOPHOS_INSTALL_OPTIONS)" \
+		--build-arg DOCKER_IMAGE_BUILD_TIME="$(DOCKER_IMAGE_BUILD_TIME)" \
+		.
 
 ./sav-linux-free-9.tgz:
 	$(error "Download $@ from https://www.sophos.com/en-us/products/free-tools/sophos-antivirus-for-linux.aspx")
