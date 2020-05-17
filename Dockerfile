@@ -1,9 +1,12 @@
-FROM ubuntu:20.04
+FROM ubuntu:20.04 AS base
 
 RUN apt-get update \
     && apt-get install -y tzdata lsb-release \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+
+# ---
+FROM base as sophos
 # Install Sophos Anti-Virus for Linux
 ADD ./sav-linux-free-9.tgz /tmp
 # for debug
@@ -11,6 +14,11 @@ ADD ./sav-linux-free-9.tgz /tmp
 ARG SOPHOS_INSTALL_OPTIONS
 RUN /tmp/sophos-av/install.sh /opt/sophos-av --acceptlicence --autostart=False --enableOnBoot=False --automatic --ignore-existing-installation $SOPHOS_INSTALL_OPTIONS
 
+
+# ---
+FROM base as savdi
+COPY --from=sophos /opt/sophos-av/ /opt/sophos-av/
+COPY --from=sophos /etc/ /etc/
 # Install SAV Dynamic Interface
 ADD ./savdi-linux-64bit.tar /tmp
 # for debug
