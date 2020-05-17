@@ -7,6 +7,12 @@ all: ;
 image: ./sav-linux-free-9.tgz ./savdi-linux-64bit.tar
 	docker build -t $(image_name) --build-arg SOPHOS_INSTALL_OPTIONS="$(SOPHOS_INSTALL_OPTIONS)" .
 
+./sav-linux-free-9.tgz:
+	echo "Download from https://www.sophos.com/en-us/products/free-tools/sophos-antivirus-for-linux.aspx"
+
+./savdi-linux-64bit.tar:
+	echo "Download from https://www.sophos.com/en-us/support/downloads/network/sav-dynamic-interface.aspx"
+
 .PHONY: run
 run:
 	docker run --rm -it \
@@ -19,12 +25,6 @@ run:
 .PHONY: attach
 attach:
 	docker exec -it $(shell docker ps | awk '$$2 == "$(image_name)" { print $$1 }') bash
-
-./sav-linux-free-9.tgz:
-	echo "Download from https://www.sophos.com/en-us/products/free-tools/sophos-antivirus-for-linux.aspx"
-
-./savdi-linux-64bit.tar:
-	echo "Download from https://www.sophos.com/en-us/support/downloads/network/sav-dynamic-interface.aspx"
 
 .PHONY: lint
 lint:
