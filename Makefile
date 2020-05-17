@@ -4,6 +4,8 @@ image_name := savdi:$(tag)
 SOPHOS_INSTALL_OPTIONS  ?= --update-free
 DOCKER_IMAGE_BUILD_TIME ?= $(shell date "+%s")
 
+container_id = $(shell docker ps | awk '$$2 == "$(image_name)" { print $$1 }')
+
 all: ;
 
 .PHONY: image
@@ -25,12 +27,15 @@ run:
 		-p 4010:4010 \
 		-e TZ=Asia/Tokyo \
 		-e SOPHOS_UPDATE_INTERVAL_SEC=120 \
-		-e WATCH_LOG_INTERVAL_SEC=1 \
+		-e LOGCAT_INTERVAL_SEC=1 \
 		$(image_name)
+.PHONY: stop
+stop:
+	docker kill $(container_id)
 
 .PHONY: attach
 attach:
-	docker exec -it $(shell docker ps | awk '$$2 == "$(image_name)" { print $$1 }') bash
+	docker exec -it $(container_id) bash
 
 .PHONY: lint
 lint:

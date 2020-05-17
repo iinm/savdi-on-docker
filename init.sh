@@ -4,7 +4,8 @@ set -eu -o pipefail
 
 : "${SOPHOS_UPDATE_INTERVAL_SEC:=3600}"
 : "${PROCESS_CHECK_INTERVAL_SEC:=5}"
-: "${WATCH_LOG_INTERVAL_SEC:=10}"
+: "${LOGCAT_INTERVAL_SEC:=10}"
+: "${SAVDI_LOGDIR:=/var/tmp/savdi/log}"
 
 log() {
   now="$(date "+%Y-%m-%d %H:%M:%S")"
@@ -26,10 +27,10 @@ PIDFILE=/var/run/savdid.pid
 (
   while true; do
     # write logs to stdout and delete logs
-    find /var/tmp/savdi/log/ -type f -size +1c \
+    find "$SAVDI_LOGDIR" -type f -size +0c -name '*.log' \
       | sort \
       | xargs --no-run-if-empty -n 1 -I {} bash -c 'cat {} && truncate -s 0 {}'
-    sleep "$WATCH_LOG_INTERVAL_SEC"
+    sleep "$LOGCAT_INTERVAL_SEC"
   done
 ) 2>&1 | with_prefix "log_watcher: " &
 log_watcher_pid=$!
