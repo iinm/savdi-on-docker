@@ -4,7 +4,7 @@ set -eu -o pipefail
 
 : "${SOPHOS_UPDATE_INTERVAL_SEC:=3600}"
 : "${PROCESS_CHECK_INTERVAL_SEC:=5}"
-: "${WATCH_LOG_INTERVAL_SEC:=5}"
+: "${WATCH_LOG_INTERVAL_SEC:=10}"
 
 log() {
   now="$(date "+%Y-%m-%d %H:%M:%S")"
@@ -15,7 +15,6 @@ with_prefix() {
   prefix="${1?}"
   while IFS= read -r line; do printf '%s%s\n' "$prefix" "$line"; done
 }
-export -f with_prefix
 
 
 # Start savdid
@@ -27,11 +26,12 @@ PIDFILE=/var/run/savdid.pid
 (
   while true; do
     # write logs to stdout and delete logs
-    find /var/tmp/savdi/log/ -type f | sort | xargs --no-run-if-empty cat
-    find /var/tmp/savdi/log/ -type f | sort | xargs --no-run-if-empty -n 1 truncate -s 0
+    find /var/tmp/savdi/log/ -type f -size +1c \
+      | sort \
+      | xargs --no-run-if-empty -n 1 -I {} bash -c 'cat {} && truncate -s 0 {}'
     sleep "$WATCH_LOG_INTERVAL_SEC"
-  done 2>&1 | with_prefix "log_watcher: "
-) &
+  done
+) 2>&1 | with_prefix "log_watcher: " &
 log_watcher_pid=$!
 
 
@@ -56,8 +56,8 @@ log_watcher_pid=$!
 
     log "end update"
     sleep "$SOPHOS_UPDATE_INTERVAL_SEC"
-  done 2>&1 | with_prefix "updater: "
-) &
+  done
+) 2>&1 | with_prefix "updater: " &
 updater_pid=$!
 
 
