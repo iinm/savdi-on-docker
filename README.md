@@ -17,7 +17,6 @@ env SOPHOS_INSTALL_OPTIONS="--update-source-username=$username --update-source-p
 
 ## Test
 
-Run
 ```sh
 make run
 ```
