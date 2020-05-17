@@ -6,7 +6,7 @@ This repository provides resources to build docker image that run Sophos Antivir
 Note that additional proprietary resources are required to build image. (See `Makefile`)
 
 
-Main processes launches following processes on container.
+Main process launches following processes on container.
 - savdi daemon   : savdi itself
 - sophos updater : This process updates sophos periodically and reload savdi daemon if there is any updates.
 - log watcher    : This process cat log file contents to stdout and truncate them periodically.
