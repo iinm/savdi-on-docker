@@ -25,6 +25,7 @@ image: ./sav-linux-free-9.tgz ./savdi-linux-64bit.tar
 run:
 	docker run --rm -it \
 		-p 4010:4010 \
+		-e DEBUG=yes \
 		-e TZ=Asia/Tokyo \
 		-e SOPHOS_UPDATE_INTERVAL_SEC=120 \
 		-e LOGCAT_INTERVAL_SEC=1 \
