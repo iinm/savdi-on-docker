@@ -32,7 +32,7 @@ PIDFILE=/var/run/savdid.pid
       | xargs --no-run-if-empty -n 1 -I {} bash -c 'cat {} && truncate -s 0 {}'
     sleep "$LOGCAT_INTERVAL_SEC"
   done
-) 2>&1 | with_prefix "logcat: " &
+) | with_prefix "logcat: " &
 logcat_pid=$!
 
 
@@ -58,7 +58,7 @@ logcat_pid=$!
     log "end update"
     sleep "$SOPHOS_UPDATE_INTERVAL_SEC"
   done
-) 2>&1 | with_prefix "updater: " &
+) | with_prefix "updater: " >&2 &
 updater_pid=$!
 
 
