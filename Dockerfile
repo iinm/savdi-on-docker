@@ -29,7 +29,7 @@ RUN /tmp/savdi-install/savdi_install.sh
 # Update
 # disable cache
 ARG DOCKER_IMAGE_BUILD_TIME
-RUN /opt/sophos-av/bin/savupdate
+RUN if test "$DOCKER_IMAGE_BUILD_TIME" -gt 0; then /opt/sophos-av/bin/savupdate; fi
 
 COPY ./docker-entrypoint.sh /docker-entrypoint.sh
 COPY ./init.sh ./scandata.sh ./healthcheck.sh /usr/local/bin/
